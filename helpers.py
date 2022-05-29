@@ -71,3 +71,24 @@ def model2png(model, filename="", overwrite=False, show_ends=False):
             f.write(img_data.read())
         img_data.seek(0)
     return mplimg.imread(img_data)
+
+def show_model(model, figsize=(5, 5), **kwargs):
+    """Display a Pomegranate model as an image using matplotlib
+
+    Parameters
+    ----------
+    model : Pomegranate.Model
+        The model object to convert. The model must have an attribute .graph
+        referencing a NetworkX.Graph instance.
+
+    figsize : tuple(int, int) (optional)
+        A tuple specifying the dimensions of a matplotlib Figure that will
+        display the converted graph
+
+    **kwargs : dict
+        The kwargs dict is passed to the model2png program, see that function
+        for details
+    """
+    plt.figure(figsize=figsize)
+    plt.imshow(model2png(model, **kwargs))
+    plt.axis('off')
