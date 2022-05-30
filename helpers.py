@@ -92,3 +92,21 @@ def show_model(model, figsize=(5, 5), **kwargs):
     plt.figure(figsize=figsize)
     plt.imshow(model2png(model, **kwargs))
     plt.axis('off')
+
+    
+class Subset(namedtuple("BaseSet", "sentences keys vocab X tagset Y N stream")):
+    def __new__(cls, sentences, keys):
+        word_sequences = tuple([sentences[k].words for k in keys])
+        tag_sequences = tuple([sentences[k].tags for k in keys])
+        wordset = frozenset(chain(*word_sequences))
+        tagset = frozenset(chain(*tag_sequences))
+        N = sum(1 for _ in chain(*(sentences[k].words for k in keys)))
+        stream = tuple(zip(chain(*word_sequences), chain(*tag_sequences)))
+        return super().__new__(cls, {k: sentences[k] for k in keys}, keys, wordset, word_sequences,
+                               tagset, tag_sequences, N, stream.__iter__)
+
+    def __len__(self):
+        return len(self.sentences)
+
+    def __iter__(self):
+        return iter(self.sentences.items())
