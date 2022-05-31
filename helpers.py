@@ -110,3 +110,30 @@ class Subset(namedtuple("BaseSet", "sentences keys vocab X tagset Y N stream")):
 
     def __iter__(self):
         return iter(self.sentences.items())
+
+class Dataset(namedtuple("_Dataset", "sentences keys vocab X tagset Y training_set testing_set N stream")):
+    def __new__(cls, tagfile, datafile, train_test_split=0.8, seed=112890):
+        tagset = read_tags(tagfile)
+        sentences = read_data(datafile)
+        keys = tuple(sentences.keys())
+        wordset = frozenset(chain(*[s.words for s in sentences.values()]))
+        word_sequences = tuple([sentences[k].words for k in keys])
+        tag_sequences = tuple([sentences[k].tags for k in keys])
+        N = sum(1 for _ in chain(*(s.words for s in sentences.values())))
+        
+        # split data into train/test sets
+        _keys = list(keys)
+        if seed is not None: random.seed(seed)
+        random.shuffle(_keys)
+        split = int(train_test_split * len(_keys))
+        training_data = Subset(sentences, _keys[:split])
+        testing_data = Subset(sentences, _keys[split:])
+        stream = tuple(zip(chain(*word_sequences), chain(*tag_sequences)))
+        return super().__new__(cls, dict(sentences), keys, wordset, word_sequences, tagset,
+                               tag_sequences, training_data, testing_data, N, stream.__iter__)
+
+    def __len__(self):
+        return len(self.sentences)
+
+    def __iter__(self):
+        return iter(self.sentences.items())
