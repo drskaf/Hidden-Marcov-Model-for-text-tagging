@@ -46,3 +46,22 @@ print("\nStream (word, tag) pairs:\n")
 for i, pair in enumerate(data.stream()):
     print("\t", pair)
     if i > 5: break
+
+def pair_counts(sequences_A, sequences_B):
+    """Return a dictionary keyed to each unique value in the first sequence list
+    that counts the number of occurrences of the corresponding value from the
+    second sequences list.
+    
+    For example, if sequences_A is tags and sequences_B is the corresponding
+    words, then if 1244 sequences contain the word "time" tagged as a NOUN, then
+    you should return a dictionary such that pair_counts[NOUN][time] == 1244
+    """
+    # TODO: Finish this function!
+    map = defaultdict(Counter)
+    for i in range(len(sequences_A)):
+        for k, v in zip(sequences_A[i],sequences_B[i]):
+                map[k][v] += 1
+    
+    return map
+
+    raise NotImplementedError
