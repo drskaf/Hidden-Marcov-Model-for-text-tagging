@@ -65,3 +65,12 @@ def pair_counts(sequences_A, sequences_B):
     return map
 
     raise NotImplementedError
+
+# Calculate C(t_i, w_i)
+emission_counts = pair_counts(data.Y, data.X) # TODO: YOUR CODE HERE
+
+assert len(emission_counts) == 12, \
+       "Uh oh. There should be 12 tags in your dictionary."
+assert max(emission_counts["NOUN"], key=emission_counts["NOUN"].get) == 'time', \
+       "Hmmm...'time' is expected to be the most common NOUN."
+HTML('<div class="alert alert-block alert-success">Your emission counts look good!</div>')
