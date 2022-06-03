@@ -91,3 +91,23 @@ class MFCTagger:
     def viterbi(self, seq):
         """This method simplifies predictions by matching the Pomegranate viterbi() interface"""
         return 0., list(enumerate(["<start>"] + [self.table[w] for w in seq] + ["<end>"]))
+
+# calculate the frequency of each tag being assigned to each word (hint: similar, but not
+# the same as the emission probabilities) and use it to fill the mfc_table
+
+word_counts = pair_counts(data.training_set.X , data.training_set.Y)  # TODO: YOUR CODE HERE
+
+#create mfc_table
+mfc_table = defaultdict()
+
+for word, tags in word_counts.items():
+    # Select the corresponding tag with highest count value
+    tag, _ = max(tags.items(), key=lambda item: item[1])
+    mfc_table[word]=tag 
+
+mfc_model = MFCTagger(mfc_table) #Create a Most Frequent Class tagger instance
+
+assert len(mfc_table) == len(data.training_set.vocab), ""
+assert all(k in data.training_set.vocab for k in mfc_table.keys()), ""
+assert sum(int(k not in mfc_table) for k in data.testing_set.vocab) == 5521, ""
+HTML('<div class="alert alert-block alert-success">Your MFC tagger has all the correct words!</div>')
