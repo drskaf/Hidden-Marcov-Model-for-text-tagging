@@ -56,7 +56,7 @@ def pair_counts(sequences_A, sequences_B):
     words, then if 1244 sequences contain the word "time" tagged as a NOUN, then
     you should return a dictionary such that pair_counts[NOUN][time] == 1244
     """
-    # TODO: Finish this function!
+    
     map = defaultdict(Counter)
     for i in range(len(sequences_A)):
         for k, v in zip(sequences_A[i],sequences_B[i]):
@@ -74,3 +74,20 @@ assert len(emission_counts) == 12, \
 assert max(emission_counts["NOUN"], key=emission_counts["NOUN"].get) == 'time', \
        "Hmmm...'time' is expected to be the most common NOUN."
 HTML('<div class="alert alert-block alert-success">Your emission counts look good!</div>')
+
+# Create a lookup table mfc_table where mfc_table[word] contains the tag label most frequently assigned to that word
+from collections import namedtuple
+
+FakeState = namedtuple("FakeState", "name")
+
+class MFCTagger:
+    # NOTE: You should not need to modify this class or any of its methods
+    missing = FakeState(name="<MISSING>")
+    
+    def __init__(self, table):
+        self.table = defaultdict(lambda: MFCTagger.missing)
+        self.table.update({word: FakeState(name=tag) for word, tag in table.items()})
+        
+    def viterbi(self, seq):
+        """This method simplifies predictions by matching the Pomegranate viterbi() interface"""
+        return 0., list(enumerate(["<start>"] + [self.table[w] for w in seq] + ["<end>"]))
