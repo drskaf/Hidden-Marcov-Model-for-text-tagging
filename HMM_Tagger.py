@@ -111,3 +111,5 @@ assert len(mfc_table) == len(data.training_set.vocab), ""
 assert all(k in data.training_set.vocab for k in mfc_table.keys()), ""
 assert sum(int(k not in mfc_table) for k in data.testing_set.vocab) == 5521, ""
 HTML('<div class="alert alert-block alert-success">Your MFC tagger has all the correct words!</div>')
+
+
