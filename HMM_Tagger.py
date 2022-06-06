@@ -124,3 +124,12 @@ def simplify_decoding(X, model):
     _, state_path = model.viterbi(replace_unknown(X))
     return [state[1].name for state in state_path[1:-1]]  # do not show the start/end state predictions
 
+
+for key in data.testing_set.keys[:3]:
+    print("Sentence Key: {}\n".format(key))
+    print("Predicted labels:\n-----------------")
+    print(simplify_decoding(data.sentences[key].words, mfc_model))
+    print()
+    print("Actual labels:\n--------------")
+    print(data.sentences[key].tags)
+    print("\n") 
