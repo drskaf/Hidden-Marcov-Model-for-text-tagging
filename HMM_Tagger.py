@@ -112,4 +112,15 @@ assert all(k in data.training_set.vocab for k in mfc_table.keys()), ""
 assert sum(int(k not in mfc_table) for k in data.testing_set.vocab) == 5521, ""
 HTML('<div class="alert alert-block alert-success">Your MFC tagger has all the correct words!</div>')
 
+def replace_unknown(sequence):
+    """Return a copy of the input sequence where each unknown word is replaced
+    by the literal string value 'nan'. Pomegranate will ignore these values
+    during computation.
+    """
+    return [w if w in data.training_set.vocab else 'nan' for w in sequence]
+
+def simplify_decoding(X, model):
+    """X should be a 1-D sequence of observations for the model to predict"""
+    _, state_path = model.viterbi(replace_unknown(X))
+    return [state[1].name for state in state_path[1:-1]]  # do not show the start/end state predictions
 
