@@ -276,3 +276,55 @@ assert len(tag_ends) == 12, "Uh oh. There should be 12 tags in your dictionary."
 assert min(tag_ends, key=tag_ends.get) in ['X', 'CONJ'], "Hmmm...'X' or 'CONJ' should be the least common ending bigram."
 assert max(tag_ends, key=tag_ends.get) == '.', "Hmmm...'.' is expected to be the most common ending bigram."
 HTML('<div class="alert alert-block alert-success">Your ending tag counts look good!</div>')
+
+# Implementing the model
+basic_model = HiddenMarkovModel(name="base-hmm-tagger")
+
+# create states with emission probability distributions P(word | tag) and add to the model
+# (you may need to loop & create/add new states)
+
+tag_starts = starting_counts(data.training_set.Y)
+tag_ends = ending_counts(data.training_set.Y)
+tag_unigrams = unigram_counts(data.training_set.Y)
+tag_bigrams = bigram_counts(data.training_set.Y)
+
+states = []
+
+for tag, tag_count in tag_unigrams.items():
+        distributions = {}
+        
+        for word, emission_count in emission_counts[tag].items():
+                distributions[word] = emission_count/tag_count
+                
+        emissions = DiscreteDistribution(distributions)
+        states.append(State(emissions, name=tag))
+
+
+basic_model.add_states(states)
+
+#  add edges between states for the observed transition frequencies P(tag_i | tag_i-1)
+# (you may need to loop & add transitions
+for i in states:
+        start_frequency = tag_starts[i.name]/sum(tag_starts.values())
+        basic_model.add_transition(basic_model.start, i, start_frequency)
+
+        end_frequency = tag_ends[i.name]/tag_unigrams[i.name]
+        basic_model.add_transition(i,basic_model.end, end_frequency)
+
+        for j in states:
+                
+                transition = (i.name, j.name)
+                transition_frequency = tag_bigrams[transition]/tag_unigrams[i.name]
+                
+                basic_model.add_transition(i, j, transition_frequency)
+
+
+# finalize the model
+basic_model.bake()
+
+assert all(tag in set(s.name for s in basic_model.states) for tag in data.training_set.tagset), \
+       "Every state in your network should use the name of the associated tag, which must be one of the training set tags."
+assert basic_model.edge_count() == 168, \
+       ("Your network should have an edge from the start node to each state, one edge between every " +
+        "pair of tags (states), and an edge from each state to the end node.")
+HTML('<div class="alert alert-block alert-success">Your HMM network topology looks good!</div>')
