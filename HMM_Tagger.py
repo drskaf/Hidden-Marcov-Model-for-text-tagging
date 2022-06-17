@@ -328,3 +328,22 @@ assert basic_model.edge_count() == 168, \
        ("Your network should have an edge from the start node to each state, one edge between every " +
         "pair of tags (states), and an edge from each state to the end node.")
 HTML('<div class="alert alert-block alert-success">Your HMM network topology looks good!</div>')
+
+hmm_training_acc = accuracy(data.training_set.X, data.training_set.Y, basic_model)
+print("training accuracy basic hmm model: {:.2f}%".format(100 * hmm_training_acc))
+
+hmm_testing_acc = accuracy(data.testing_set.X, data.testing_set.Y, basic_model)
+print("testing accuracy basic hmm model: {:.2f}%".format(100 * hmm_testing_acc))
+
+assert hmm_training_acc > 0.97, "Uh oh. Your HMM accuracy on the training set doesn't look right."
+assert hmm_testing_acc > 0.955, "Uh oh. Your HMM accuracy on the testing set doesn't look right."
+
+# examples decoding sequences with HMM tagger
+for key in data.testing_set.keys[:3]:
+    print("Sentence Key: {}\n".format(key))
+    print("Predicted labels:\n-----------------")
+    print(simplify_decoding(data.sentences[key].words, basic_model))
+    print()
+    print("Actual labels:\n--------------")
+    print(data.sentences[key].tags)
+    print("\n")
