@@ -136,4 +136,4 @@ class Dataset(namedtuple("_Dataset", "sentences keys vocab X tagset Y training_s
         return len(self.sentences)
 
     def __iter__(self):
-        return iter(self.sentences.items())
+        return iter(self.sentences.items())    
