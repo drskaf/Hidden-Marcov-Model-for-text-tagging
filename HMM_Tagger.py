@@ -81,7 +81,6 @@ from collections import namedtuple
 FakeState = namedtuple("FakeState", "name")
 
 class MFCTagger:
-    # NOTE: You should not need to modify this class or any of its methods
     missing = FakeState(name="<MISSING>")
     
     def __init__(self, table):
@@ -281,7 +280,6 @@ HTML('<div class="alert alert-block alert-success">Your ending tag counts look g
 basic_model = HiddenMarkovModel(name="base-hmm-tagger")
 
 # create states with emission probability distributions P(word | tag) and add to the model
-# (you may need to loop & create/add new states)
 
 tag_starts = starting_counts(data.training_set.Y)
 tag_ends = ending_counts(data.training_set.Y)
@@ -303,7 +301,6 @@ for tag, tag_count in tag_unigrams.items():
 basic_model.add_states(states)
 
 #  add edges between states for the observed transition frequencies P(tag_i | tag_i-1)
-# (you may need to loop & add transitions
 for i in states:
         start_frequency = tag_starts[i.name]/sum(tag_starts.values())
         basic_model.add_transition(basic_model.start, i, start_frequency)
