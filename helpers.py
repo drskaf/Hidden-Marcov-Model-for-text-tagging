@@ -107,7 +107,7 @@ class Subset(namedtuple("BaseSet", "sentences keys vocab X tagset Y N stream")):
 
     def __len__(self):
         return len(self.sentences)
-
+   
     def __iter__(self):
         return iter(self.sentences.items())
 
