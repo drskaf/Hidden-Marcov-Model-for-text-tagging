@@ -11,7 +11,7 @@ from collections import namedtuple, OrderedDict
 
 Sentence = namedtuple("Sentence", "words tags")
 
-def read_data(filename):
+def read_data(filename):   
     """Read tagged sentence data"""
     with open(filename, 'r') as f:
         sentence_lines = [l.split("\n") for l in f.read().split("\n\n")]
