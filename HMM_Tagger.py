@@ -2,7 +2,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from IPython.core.display import HTML
+from IPython.core.display import HTML   
 from itertools import chain
 from collections import Counter, defaultdict
 from helpers import show_model, Dataset
@@ -133,7 +133,7 @@ for key in data.testing_set.keys[:3]:
     print(data.sentences[key].tags)
     print("\n") 
 
-# Evaluate accuracy
+# Evaluate accuracy  
 
 def accuracy(X, Y, model):
     """Calculate the prediction accuracy by using the model to decode each sequence
