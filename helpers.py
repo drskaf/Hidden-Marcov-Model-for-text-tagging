@@ -1,7 +1,7 @@
 import os
 import matplotlib.pyplot as plt
 import matplotlib.image as mplimg
-import networkx as nx
+import networkx as nx   
 import random   
 
 from io import BytesIO
