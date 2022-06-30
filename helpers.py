@@ -4,7 +4,7 @@ import matplotlib.image as mplimg
 import networkx as nx   
 import random   
 
-from io import BytesIO
+from io import BytesIO   
 from itertools import chain
 from collections import namedtuple, OrderedDict
 
