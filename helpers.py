@@ -95,7 +95,7 @@ def show_model(model, figsize=(5, 5), **kwargs):
 
     
 class Subset(namedtuple("BaseSet", "sentences keys vocab X tagset Y N stream")):
-    def __new__(cls, sentences, keys):
+    def __new__(cls, sentences, keys):  
         word_sequences = tuple([sentences[k].words for k in keys])
         tag_sequences = tuple([sentences[k].tags for k in keys])
         wordset = frozenset(chain(*word_sequences))
