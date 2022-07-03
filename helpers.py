@@ -35,7 +35,7 @@ def model2png(model, filename="", overwrite=False, show_ends=False):
 
         Model -> NetworkX.Graph -> PyDot.Graph -> bytes -> PNG
 
-    Parameters
+    Parameters  
     ----------
     model : Pomegranate.Model
         The model object to convert. The model must have an attribute .graph
