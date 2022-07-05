@@ -2,7 +2,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from IPython.core.display import HTML   
+from IPython.core.display import HTML      
 from itertools import chain
 from collections import Counter, defaultdict
 from helpers import show_model, Dataset
